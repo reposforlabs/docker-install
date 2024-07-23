@@ -22,3 +22,17 @@ sudo apt-get update
 sudo apt-get install -y \
 docker-ce docker-ce-cli containerd.io \
 docker-buildx-plugin docker-compose-plugin
+
+# Run Docker in rootless mode
+sudo sh -eux <<EOF
+# Install newuidmap & newgidmap binaries
+apt-get install -y uidmap
+EOF
+
+dockerd-rootless-setuptool.sh install
+
+# Set Docker run automatically at startup
+sudo loginctl enable-linger linuxadmin
+
+# If you need to restart Docker you have use this Syntax
+# systemctl --user (start|stop|restart) docker.service
